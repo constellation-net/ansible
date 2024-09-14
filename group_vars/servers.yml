@@ -1,0 +1,31 @@
+---
+flux:
+  cluster_domain: starsystem.dev
+  git:
+    owner: constellation-net
+    repository: cluster
+    private_key:
+      local_path: ~/Documents/Constellation/Keys/id_constellation.ed25519
+      remote_path: /tmp/flux_git.key # Flux stores a copy of the key in the cluster as a Secret
+      password: # TODO: add here from vault
+
+server:
+  cluster:
+    domain: cluster.starsystem.dev
+    # Anyone can read the file, allowing kubectl to be used without sudo
+    # Shouldn't be a security risk
+    kubeconfig_write_mode: "0644"
+    disable: 
+      - traefik # Managed ourselves via Flux
+      - servicelb # Replaced with kube-vip
+      - local-storage # We manage this ourselves
+    disable_cloud_controller: true # So kube-vip can manage LoadBalancer services
+    flannel_backend: wireguard-native # This seemed to fix a few issues I was having with nodes connecting to each other
+    # Secret resources will be encrypted on disk while at-rest 
+    encrypt_secrets: true
+    tls_san:
+      - 192.168.1.119 # Virtual IP of the cluster
+
+kubeconfig:
+  local_copy:
+    remote_ip: 192.168.1.119

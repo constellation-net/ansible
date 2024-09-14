@@ -1,0 +1,5 @@
+---
+agent:
+  name: {{ inventory_hostname }}
+  token: # TODO: add from vault
+  join_ip: 192.168.1.120 # Joins them to Sol, as kube-vip will not be running yet  

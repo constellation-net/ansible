@@ -1,0 +1,10 @@
+---
+- include_tasks: group.yml
+  when: group.create | bool == true
+
+- include_tasks: pub_key.yml
+  when: pub_key.add | bool == true
+
+- import_tasks: acls.yml
+- import_tasks: auth.yml
+- import_tasks: root.yml

@@ -1,0 +1,25 @@
+cluster-domain: {{ cluster.domain }}
+cluster-init: {{ cluster.init }}
+write-kubeconfig-mode: {{ cluster.kubeconfig_write_mode }}
+disable: {{ cluster.disable }}
+disable-cloud-controller: {{ cluster.disable_cloud_controller }}
+tls-san: {{ cluster.tls_san }}
+secrets-encryption: {{ cluster.encrypt_secrets }}
+flannel-backend: {{ cluster.flannel_backend }}
+
+datastore-endpoint: {{ cluster.datastore }}
+etcd-expose-metrics: {{ etcd.expose_metrics }}
+etcd-disable-snapshots: {{ etcd.snapshots.disabled }}
+etcd-snapshot-retention: {{ etcd.snapshots.retention }}
+etcd-snapshot-dir: {{ etcd.snapshots.directory }}
+
+etcd-s3: {{ etcd.s3_backup.enabled }}
+etcd-s3-access-key: {{ etcd.s3_backup.access_key }}
+etcd-s3-secret-key: {{ etcd.s3_backup.secret_key }}
+etcd-s3-bucket: {{ etcd.s3_backup.bucket }}
+  
+node-name: {{ name }}
+node-label: {{ labels }}
+node-taint: {{ taints }}
+server: {{ join_ip }}
+token: {{ token }}

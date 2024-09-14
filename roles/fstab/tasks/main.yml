@@ -1,0 +1,13 @@
+---
+- name: Add drives to fstab
+  ansible.builtin.lineinfile:
+    line: PARTUUID={{ item.partuuid }} {{ item.mountpoint }} {{ item.fs }} {{ item.options }} {{ item.dump }} {{ item.pass }}
+    path: /etc/fstab
+    state: present
+  loop: drives
+
+- name: Mount all unmounted drives
+  ansible.builtin.command:
+    cmd: mount -a
+  register: mnt
+  failed_when: mnt.rc != 0

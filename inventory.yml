@@ -1,0 +1,19 @@
+servers:
+  hosts:
+    luna:
+    sol:
+    nebula:
+
+agents:
+  hosts:
+    pluto:
+    voyager:
+    clover:
+    sagittarius: 
+
+raspberrypis:
+  hosts:
+    voyager:
+    pluto:
+    luna:
+    sol:

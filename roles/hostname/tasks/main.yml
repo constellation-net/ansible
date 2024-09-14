@@ -1,0 +1,20 @@
+---
+- name: Update hostname file
+  ansible.builtin.copy:
+    dest: /etc/hostname
+    content: |
+        {{ hostname }}
+    owner: root
+    group: root
+    mode: '644' # U:RW, G:R, O:R
+    state: present
+      
+- name: Update hosts file
+  ansible.builtin.lineinfile:
+    path: /etc/hosts
+    search_string: '127.0.1.1'
+    line: 127.0.1.1 {{ hostname }}.local {{ hostname }}
+    owner: root
+    group: root
+    mode: '644' # U:RW, G:R, O:R
+    state: present

@@ -1,0 +1,14 @@
+---
+- name: Add CPU overclock to boot config
+  ansible.builtin.lineinfile:
+    search_string: arm_freq
+    line: arm_freq={{ overclocking.cpu_freq }}
+    path: /boot/firmware/config.txt
+    state: present
+
+- name: Add GPU overclock to boot config
+  ansible.builtin.lineinfile:
+    search_string: gpu_freq
+    line: gpu_freq={{ overclocking.gpu_freq }}
+    path: /boot/firmware/config.txt
+    state: present

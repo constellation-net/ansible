@@ -1,0 +1,11 @@
+---
+ansible_host: 192.168.1.125
+ansible_user: admin2
+
+agent:
+  labels:
+    - class.node.cluster.starsystem.dev=games # Indicates that the compute resources on this node are reserved for hosting game servers
+  # Prevents Pods from running on this node unless they are game servers or the resources are desperately needed
+  taints:
+    - taint.node.cluster.starsystem.dev=games:PreferNoSchedule
+    - taint.node.cluster.starsystem.dev=games:PreferNoExecute

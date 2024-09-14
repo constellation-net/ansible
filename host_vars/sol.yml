@@ -1,0 +1,12 @@
+---
+ansible_host: 192.168.1.120
+
+server:
+  cluster:
+    init: true # This node will be the first in the cluster
+
+raspberrypi:
+  overclocking:
+    enabled: true
+    cpu_freq: 3000 # in MHz
+    gpu_freq: 1000 # in MHz

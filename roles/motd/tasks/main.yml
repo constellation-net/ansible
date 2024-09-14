@@ -1,0 +1,29 @@
+---
+- name: Install MOTD dependencies
+  ansible.builtin.apt:
+    name:
+      - neofetch
+      - figlet
+    state: latest
+      
+- name: Remove Debian static MOTD
+  ansible.builtin.file:
+    path: /etc/motd
+    state: absent
+      
+- name: Create MOTD scripts directory
+  ansible.builtin.file:
+    path: /etc/update-motd.d
+    state: directory
+    owner: root
+    group: root
+    mode: '755' # U:RWX, G:RX, O:RX
+      
+- name: Create MOTD script
+  ansible.builtin.template:
+    dest: /etc/update-motd.d/00-constellation
+    src: ./templates/motd.j2
+    owner: root
+    group: root
+    mode: '755' # U:RWX, G:RX, O:RX
+    force: true # File will be overwritten if it already exists

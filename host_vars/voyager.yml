@@ -1,0 +1,10 @@
+---
+ansible_host: 192.168.1.124
+
+agent:
+  labels:
+    - class.node.cluster.starsystem.dev=camera # Identifies this node as being an IP camera, which tells Kubernetes to schedule an MJPEG stream on it
+  # These nodes have very few available resources, so we prevent scheduling anything on them
+  taints:
+    - taint.node.cluster.starsystem.dev=device:NoSchedule
+    - taint.node.cluster.starsystem.dev=device:NoExecute

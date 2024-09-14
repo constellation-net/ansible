@@ -1,0 +1,27 @@
+---
+ansible_host: 192.168.1.121
+
+fstab:
+  drives:
+    - mountpoint: /mnt/cluster/nfs
+      partuuid: e08f7d91-13d8-49f7-9340-0e53b0bd8e99
+      fs: ext4
+      options: ""
+      dump: "0"
+      pass: "2"
+    - mountpoint: /mnt/cluster/databases
+      partuuid: 4bb3b16b-b5f7-44c3-883c-225c9fff059d
+      fs: ext4
+      options: ""
+      dump: "0"
+      pass: "2"
+
+server:
+  node:
+    labels:
+      - class.node.cluster.starsystem.dev=database # Database Pods will use this label to identify which node to be scheduled on
+    # Prevents Pods not related to database storage from being scheduled to, or executed on, this node
+    # Should the compute resources be needed (e.g. other nodes go offline), then K8s is allowed to use this node
+    taints:
+      - taint.node.cluster.starsystem.dev=database:PreferNoSchedule
+      - taint.node.cluster.starsystem.dev=database:PreferNoExecute

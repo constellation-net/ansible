@@ -1,0 +1,7 @@
+---
+ansible_host: 192.168.1.122
+
+server:
+  node:
+    labels:
+      - class.node.cluster.starsystem.dev=hypervisor # Makes K8s aware that this node is a hypervisor, currently has no affect

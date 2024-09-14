@@ -1,0 +1,35 @@
+---
+- name: Configure common node options
+  hosts: all
+
+  tasks:
+    - include_role:
+        name: hostname
+
+    - include_role:
+        name: motd
+
+    - include_role:
+        name: fstab
+      vars: {{ fstab }}
+
+    - include_role:
+        name: ssh
+      vars: {{ ssh }}
+
+- name: Configure specific features for Raspberry Pis
+  hosts: raspberrypis
+
+  tasks:
+    - include_role:
+        name: raspberrypi
+      vars: {{ raspberrypi }}
+
+    - include_tasks: pi5.yml
+      when: model is regex('^Raspberry Pi 5*')
+
+    - include_tasks: pi4.yml
+      when: model is regex('^Raspberry Pi 4*')
+
+- name: Reboot so changes can take effect
+  ansible.builtin.reboot:

@@ -1,0 +1,13 @@
+git:
+  host: github.com
+  owner: 
+  repository: 
+  branch: main
+  path: ./
+  private_key:
+    local_path:
+    remote_path:  
+    password: 
+
+add_bash_autocompletions: true
+cluster_domain: cluster.local

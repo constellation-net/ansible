@@ -1,0 +1,7 @@
+---
+- name: Create server config
+  ansible.builtin.template:
+    src: templates/config.yml.j2
+    dest: /etc/rancher/k3s/config.yaml
+    force: true
+    mode: 644

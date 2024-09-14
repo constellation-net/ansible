@@ -1,0 +1,5 @@
+---
+overclocking:
+  enabled: false
+  cpu_freq: 
+  gpu_freq: 

@@ -1,0 +1,20 @@
+---
+- name: Clone Git repository
+  ansible.builtin.git:
+    repo: https://github.com/sunfounder/pironman.git
+    dest: /etc/pironman
+    version: v2.0
+
+- name: Run Python install script
+  ansible.builtin.script:
+    chdir: /etc/pironman
+    cmd: install.py
+    executable: python3
+
+# See here for all possible config options: https://docs.sunfounder.com/projects/pironman-v2/en/latest/setup_pironman.html#modify-the-configuration
+- name: Set LCD screen to be always on
+  ansible.builtin.lineinfile:
+    line: screen_always_on = True
+    search_string: screen_always_on
+    path: /opt/pironman/config.txt
+    state: present

@@ -1,0 +1,10 @@
+---
+- name: Add kubeconfig to profile exports
+  ansible.builtin.lineinfile:
+    line: export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+    path: /etc/profile
+    state: present
+  when: add_to_profile | bool == true
+
+- include_tasks: local_copy.yml
+  when: local_copy.enabled | bool == true
