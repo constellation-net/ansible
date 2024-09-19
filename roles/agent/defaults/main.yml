@@ -1,5 +1,6 @@
-name: 
-labels: []
-taints: []
-join_ip:
-token: 
+agent_vars:
+  name: "{{ inventory_hostname }}"
+  labels: []
+  taints: []
+  join_ip:
+  token:

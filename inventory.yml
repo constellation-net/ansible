@@ -1,7 +1,10 @@
+master:
+  hosts:
+    sol:
+
 servers:
   hosts:
     luna:
-    sol:
     nebula:
 
 agents:

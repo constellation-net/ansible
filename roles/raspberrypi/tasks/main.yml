@@ -3,4 +3,4 @@
 - import_tasks: model.yml
 
 - include_tasks: overclock.yml
-  when: overclocking.enabled | bool == true
+  when: raspberrypi_vars.overclocking.enabled

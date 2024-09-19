@@ -1,5 +1,4 @@
-add_to_profile: true
-local_copy:
+kubeconfig_vars:
   enabled: true
   local_path: ~/.kube/constellation
-  remote_ip: 
+  remote_ip:

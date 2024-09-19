@@ -1,25 +1,59 @@
 ---
-- name: Deploy all Kubernetes server nodes
+- name: Initialise the cluster with the master node
+  hosts: master[0]
+
+  tasks:
+    - include_role:
+        name: master
+      vars:
+        master_vars: "{{ master }}"
+
+    - include_role:
+        name: k3s
+
+    - include_role:
+        name: kubeconfig
+      vars:
+        kubeconfig_vars: "{{ kubeconfig }}"
+
+- name: Join additional server nodes to the cluster
   hosts: servers
 
   tasks:
     - include_role:
         name: server
-      vars: {{ server }}
+      vars:
+        server_vars:
+          token: "{{ hostvars[groups['master'][0]]['master_token'] }}"
+          join_ip: "{{ hostvars[groups['master'][0]]['master_ip'] }}"
+          cluster: "{{ server.cluster }}"
+          labels: "{{ server.labels }}"
+          taints: "{{ server.taints }}"
 
-- name: Deploy agents to the Kubernetes cluster
+    - include_role:
+        name: k3s
+
+- name: Join agents to the cluster
   hosts: agents
-  
+
   tasks:
     - include_role:
         name: agent
-      vars: {{ agent }}
+      vars:
+        agent_vars:
+          token: "{{ hostvars[groups['master'][0]]['master_token'] }}"
+          join_ip: "{{ hostvars[groups['master'][0]]['master_ip'] }}"
+          labels: "{{ agent.labels }}"
+          taints: "{{ agent.taints }}"
+
+    - include_role:
+        name: k3s
 
 - name: Deploy Flux to the cluster
-  hosts: servers
+  hosts: master[0]
 
   tasks:
     - include_role:
         name: flux
-      vars: {{ flux }}
-      run_once: true
+      vars:
+        flux_vars: "{{ flux }}"

@@ -5,4 +5,4 @@
   register: slurped_model
 
 - set_fact:
-    model: {{ slurped_model.content | ansible.builtin.b64decode }}
+    model: "{{ slurped_model.content | ansible.builtin.b64decode }}"

@@ -1,7 +1,0 @@
-drives:
-  - mountpoint: /mnt/drive
-    partuuid: 
-    fs: ext4
-    options:
-    dump: "0"
-    pass: "2"

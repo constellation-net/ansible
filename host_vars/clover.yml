@@ -1,6 +1,5 @@
 ---
 ansible_host: 192.168.1.125
-ansible_user: admin2
 
 agent:
   labels:

@@ -1,7 +1,6 @@
 neofetch
-figlet -t "{{ figlet_text }}"
+figlet -t "{{ motd_vars.figlet_text }}"
 echo "\n"
-echo "Node: {{ hostname }}"
-echo "Node roles: {{ roles | join(', ') }}"
+echo "Node: {{ inventory_hostname }}"
 echo "Local IP address: $(ip -o route get to 8.8.8.8 | sed -n 's/.*src \([0-9.]\+\).*/\1/p')"
 echo "Public IP address: $(wget -qO- https://ipecho.net/plain)"

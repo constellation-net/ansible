@@ -1,5 +1,6 @@
 ---
-overclocking:
-  enabled: false
-  cpu_freq: 
-  gpu_freq: 
+raspberrypi_vars:
+  overclocking:
+    enabled: false
+    cpu_freq:
+    gpu_freq:

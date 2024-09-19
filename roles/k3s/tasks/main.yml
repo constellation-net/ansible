@@ -3,7 +3,10 @@
   ansible.builtin.get_url:
     url: https://get.k3s.io
     dest: /tmp/k3s/install.sh
+    mode: "0700" # U:RWX, G:N, O:N
 
 - name: Run the k3s installation script as agent
   ansible.builtin.command:
     cmd: bash /tmp/k3s/install.sh agent
+  register: script_result
+  changed_when: script_result.rc == 0

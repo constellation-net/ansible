@@ -3,3 +3,5 @@
 - name: Add cgroup config to boot options
   ansible.builtin.command:
     cmd: echo " cgroup_memory=1 cgroup_enable=memory" >> /boot/firmware/cmdline.txt
+  register: script_result
+  changed_when: script_result.rc == 0

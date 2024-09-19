@@ -4,9 +4,11 @@
     line: ". <(flux completion bash)"
     path: /etc/profile
     state: present
-  when: add_bash_autocompletions | bool == true
+  when: flux_vars.add_bash_autocompletions
 
 # As per https://fluxcd.io/flux/installation, flux bootstrap is indempotent. Hence, it's safe to run this just using Ansible's command module
 - name: Bootstrap the Flux Git repository
   ansible.builtin.command:
-    cmd: flux bootstrap git --url=ssh://git@{{ git.host }}/{{ git.owner }}/{{ git.repository }} --branch={{ git.branch }} --private-key-file={{ git.private_key.path }} --password={{ git.private_key.password }} --path={{ git.path }} --cluster-domain={{ cluster_domain }}
+    cmd: flux bootstrap github --owner={{ flux_vars.bootstrap.owner }} --repository={{ flux_vars.bootstrap.repository }} --branch={{ flux_vars.bootstrap.branch }} --path={{ flux_vars.bootstrap.path }} --cluster-domain={{ flux_vars.cluster_domain }} --private=false --personal=false
+  register: script_result
+  changed_when: script_result.rc == 0

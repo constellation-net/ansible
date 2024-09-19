@@ -1,0 +1,5 @@
+skip_list:
+  - name[missing]
+  - fqcn[action-core]
+  - yaml[line-length]
+  - package-latest

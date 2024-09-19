@@ -1,0 +1,21 @@
+---
+flux:
+  cluster_domain: cluster.starsystem.dev
+  git:
+    owner: constellation-net
+    repository: cluster
+
+master:
+  cluster:
+    domain: cluster.starsystem.dev
+    disable: 
+      - traefik # Managed ourselves via Flux
+      - servicelb # Replaced with kube-vip
+      - local-storage # We manage this ourselves
+    disable_cloud_controller: true # So kube-vip can manage LoadBalancer services
+    tls_san:
+      - 192.168.1.119 # Virtual IP of the cluster
+
+kubeconfig:
+  local_copy:
+    remote_ip: 192.168.1.119

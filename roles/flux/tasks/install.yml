@@ -1,19 +1,12 @@
 ---
-- name: Copy the SSH key for the Git repository to the host
-  ansible.builtin.copy:
-    src: {{ git.private_key.local_path }}
-    dest: {{ git.private_key.remote_path }}
-    force: true
-    mode: 600 # U: RW, G: N, O: N
-    owner: root
-    group: root
-    state: present
-
 - name: Download FluxCD installation script
   ansible.builtin.get_url:
     url: https://fluxcd.io/install.sh
     dest: /tmp/fluxcd/install.sh
+    mode: "0700" # U:RWX, G:N, O:N
 
 - name: Run installation script
   ansible.builtin.command:
     cmd: bash /tmp/fluxcd/install.sh
+  register: script_result
+  changed_when: script_result.rc == 0

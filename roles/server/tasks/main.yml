@@ -4,4 +4,12 @@
     src: templates/config.yml.j2
     dest: /etc/rancher/k3s/config.yaml
     force: true
-    mode: 644
+    owner: root
+    group: root
+    mode: "0644" # U:RW, G:R, O:R
+
+- name: Add kubeconfig to profile exports
+  ansible.builtin.lineinfile:
+    line: export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+    path: /etc/profile
+    state: present

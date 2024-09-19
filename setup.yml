@@ -9,13 +9,19 @@
     - include_role:
         name: motd
 
-    - include_role:
-        name: fstab
-      vars: {{ fstab }}
+    - name: Mount all the drives, Ansible will add to fstab if needed
+      ansible.posix.mount:
+        path: "{{ item.mountpoint }}"
+        src: "{{ item.device }}"
+        fstype: "{{ item.fs }}"
+        boot: true
+        state: mounted
+      loop: drives
 
     - include_role:
         name: ssh
-      vars: {{ ssh }}
+      vars:
+        ssh_vars: "{{ ssh }}"
 
 - name: Configure specific features for Raspberry Pis
   hosts: raspberrypis
@@ -23,13 +29,19 @@
   tasks:
     - include_role:
         name: raspberrypi
-      vars: {{ raspberrypi }}
+      vars:
+        raspberrypi_vars: "{{ raspberrypi }}"
 
-    - include_tasks: pi5.yml
+    - include_role:
+        name: pironman5
       when: model is regex('^Raspberry Pi 5*')
 
-    - include_tasks: pi4.yml
+    - include_role:
+        name: argon40
       when: model is regex('^Raspberry Pi 4*')
 
-- name: Reboot so changes can take effect
-  ansible.builtin.reboot:
+- name: Reboot all nodes so changes can take effect
+  hosts: all
+
+  tasks:
+    - ansible.builtin.reboot:

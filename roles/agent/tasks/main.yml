@@ -3,5 +3,7 @@
   ansible.builtin.template:
     src: templates/config.yml.j2
     dest: /etc/rancher/k3s/config.yaml
-    force: true 
-    mode: 644
+    force: true
+    owner: root
+    group: root
+    mode: "0644" # U:RW, G:R, O:R

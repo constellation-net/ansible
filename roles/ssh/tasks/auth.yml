@@ -2,21 +2,20 @@
 - name: Enable SSH access via keys
   ansible.builtin.lineinfile:
     path: /etc/ssh/sshd_config
-    search_string: 'PubkeyAuthentication'
-    line: 'PubkeyAuthentication yes'
+    search_string: PubkeyAuthentication
+    line: PubkeyAuthentication yes
     owner: root
     group: root
-    mode: '644' # U:RW, G:R, O:R
+    mode: "0644" # U:RW, G:R, O:R
     state: present
-  when: auth.allow_keys | bool == true
+  when: ssh_vars.auth.allow_keys
 
 - name: Disable SSH access via password
   ansible.builtin.lineinfile:
     path: /etc/ssh/sshd_config
-    search_string: 'PasswordAuthentication'
-    line: 'PasswordAuthentication no'
+    search_string: PasswordAuthentication
+    line: PasswordAuthentication no
     owner: root
     group: root
-    mode: '644' # U:RW, G:R, O:R
+    mode: "0644" # U:RW, G:R, O:R
     state: present
-  when: auth.allow_passwords | bool == false and auth.allow_keys | bool == true and pub_key.add | bool == true # Passwords can only be disabled if SSH keys are enabled (and one is added for the current user), to prevent locking yourself out

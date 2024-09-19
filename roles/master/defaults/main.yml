@@ -1,0 +1,24 @@
+master_vars:
+  name: "{{ inventory_hostname }}"
+  labels: []
+  taints: []
+  cluster:
+    domain: cluster.local
+    kubeconfig_write_mode: "0644"
+    disable: []
+    disable_cloud_controller: false
+    tls_san: []
+    encrypt_secrets: true
+    flannel_backend: wireguard-native
+    datastore: etcd
+  etcd:
+    expose_metrics: true
+    snapshots:
+      disabled: true
+      retention: 10
+      directory: /snapshots/etcd
+    s3_backend:
+      enabled: false
+      access_key:
+      secret_key:
+      bucket: etcd-backups

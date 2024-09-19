@@ -3,17 +3,17 @@
   ansible.builtin.copy:
     dest: /etc/hostname
     content: |
-        {{ hostname }}
+      {{ inventory_hostname }}
     owner: root
     group: root
-    mode: '644' # U:RW, G:R, O:R
+    mode: "0644" # U:RW, G:R, O:R
     state: present
-      
+
 - name: Update hosts file
   ansible.builtin.lineinfile:
     path: /etc/hosts
     search_string: '127.0.1.1'
-    line: 127.0.1.1 {{ hostname }}.local {{ hostname }}
+    line: "127.0.1.1 {{ inventory_hostname }}.local {{ inventory_hostname }}"
     owner: root
     group: root
     mode: '644' # U:RW, G:R, O:R

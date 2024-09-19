@@ -1,5 +1,5 @@
-node-name: {{ name }}
-node-label: {{ labels }}
-node-taint: {{ taints }}
-server: {{ join_ip }}
-token: {{ token }}
+node-name: {{ agent_vars.name }}
+node-label: {{ agent_vars.labels | list }}
+node-taint: {{ agent_vars.taints | list }}
+server: {{ agent_vars.join_ip }}
+token: {{ agent_vars.token }}

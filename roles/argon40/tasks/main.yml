@@ -3,7 +3,10 @@
   ansible.builtin.get_url:
     url: https://download.argon40.com/argon1.sh
     dest: /tmp/argon40.sh
+    mode: "0700" # U:RWX, G:N, O:N
 
 - name: Run script to install software
   ansible.builtin.command:
     cmd: bash /tmp/argon40.sh
+  register: script_result
+  changed_when: script_result.rc == 0

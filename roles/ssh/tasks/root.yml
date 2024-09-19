@@ -2,30 +2,30 @@
 - name: Disable root login via SSH
   ansible.builtin.lineinfile:
     path: /etc/ssh/sshd_config
-    search_string: 'PermitRootLogin'
-    line: 'PermitRootLogin no'
+    search_string: PermitRootLogin
+    line: PermitRootLogin no
     owner: root
     group: root
-    mode: '644' # U:RW, G:R, O:R
+    mode: "0644" # U:RW, G:R, O:R
     state: present
-  when: auth.allow_root_ssh | bool == false
+  when: not ssh_vars.auth.allow_root_ssh
 
 - name: Disable root login completely
   ansible.builtin.lineinfile:
     path: /etc/passwd
-    search_string: 'root:x:0:0:root:/root:/bin/bash'
-    line: 'root:x:0:0:root:/root:/sbin/nologin'
+    search_string: root:x:0:0:root:/root:/bin/bash
+    line: root:x:0:0:root:/root:/sbin/nologin
     owner: root
     group: root
-    mode: '644' # U:RW, G:R, O:R
+    mode: "0644" # U:RW, G:R, O:R
     state: present
-  when: allow_root_login | bool == false
-    
+  when: not ssh_vars.allow_root_login
+
 - name: Create nologin prompt
   ansible.builtin.copy:
     dest: /etc/nologin.txt
-    content: {{ nologin_prompt }}
-    mode: '644' # U:RW, G:R, O:R
+    content: "{{ ssh_vars.nologin_prompt }}"
+    mode: "0644" # U:RW, G:R, O:R
     owner: root
     group: root
     force: true # File will be created if it doesn't exist

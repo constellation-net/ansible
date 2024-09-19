@@ -1,3 +1,2 @@
-figlet_text: Constellation
-hostname: {{ inventory_hostname }}
-roles: []
+motd_vars:
+  figlet_text: Constellation
