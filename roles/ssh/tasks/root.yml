@@ -1,4 +1,10 @@
 ---
+- name: Set defaults for variables
+  ansible.builtin.set_fact:
+    allow_root_ssh: "{{ ssh_vars.auth.allow_root_ssh | default(False) }}"
+    allow_root_user: "{{ ssh_vars.allow_root_login | default(False) }}"
+    nologin: "{{ ssh_vars.nologin_prompt | default('This account has been disabled by the administrator. This may be because the account has been archived and no longer has access to Constellation, or because this is a root account and cannot be used for security reasons.') }}"
+
 - name: Disable root login via SSH
   ansible.builtin.lineinfile:
     path: /etc/ssh/sshd_config
@@ -8,7 +14,7 @@
     group: root
     mode: "0644" # U:RW, G:R, O:R
     state: present
-  when: not ssh_vars.auth.allow_root_ssh
+  when: not allow_root_ssh
 
 - name: Disable root login completely
   ansible.builtin.lineinfile:
@@ -19,12 +25,12 @@
     group: root
     mode: "0644" # U:RW, G:R, O:R
     state: present
-  when: not ssh_vars.allow_root_login
+  when: not allow_root_user
 
 - name: Create nologin prompt
   ansible.builtin.copy:
     dest: /etc/nologin.txt
-    content: "{{ ssh_vars.nologin_prompt }}"
+    content: "{{ nologin }}"
     mode: "0644" # U:RW, G:R, O:R
     owner: root
     group: root

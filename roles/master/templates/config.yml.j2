@@ -1,23 +1,22 @@
-cluster-domain: {{ master_vars.cluster.domain }}
+cluster-domain: {{ master_vars.cluster.domain | default('cluster.local') }}
 cluster-init: true
-write-kubeconfig-mode: {{ master_vars.cluster.kubeconfig_write_mode }}
-disable: {{ master_vars.cluster.disable | list }}
-disable-cloud-controller: {{ master_vars.cluster.disable_cloud_controller }}
-tls-san: {{ master_vars.cluster.tls_san | list }}
-secrets-encryption: {{ master_vars.cluster.encrypt_secrets }}
-flannel-backend: {{ master_vars.cluster.flannel_backend }}
+write-kubeconfig-mode: {{ master_vars.cluster.kubeconfig_write_mode | default('0644') }}
+disable: {{ master_vars.cluster.disable | default([]) | list }}
+disable-cloud-controller: {{ master_vars.cluster.disable_cloud_controller | default('false') }}
+tls-san: {{ master_vars.cluster.tls_san | default([]) | list }}
+secrets-encryption: {{ master_vars.cluster.encrypt_secrets | default('true') }}
+flannel-backend: {{ master_vars.cluster.flannel_backend | default('wireguard-native') }}
 
-datastore-endpoint: {{ master_vars.cluster.datastore }}
-etcd-expose-metrics: {{ master_vars.etcd.expose_metrics }}
-etcd-disable-snapshots: {{ master_vars.etcd.snapshots.disabled }}
-etcd-snapshot-retention: {{ master_vars.etcd.snapshots.retention }}
-etcd-snapshot-dir: {{ master_vars.etcd.snapshots.directory }}
+etcd-expose-metrics: {{ master_vars.etcd.expose_metrics | default('true') }}
+etcd-disable-snapshots: {{ master_vars.etcd.snapshots.disabled | default('false') }}
+etcd-snapshot-retention: {{ master_vars.etcd.snapshots.retention | default(10) }}
+etcd-snapshot-dir: {{ master_vars.etcd.snapshots.directory | default('/snapshots/etcd') }}
 
-etcd-s3: {{ master_vars.etcd.s3_backup.enabled }}
-etcd-s3-access-key: {{ master_vars.etcd.s3_backup.access_key }}
-etcd-s3-secret-key: {{ master_vars.etcd.s3_backup.secret_key }}
-etcd-s3-bucket: {{ master_vars.etcd.s3_backup.bucket }}
+etcd-s3: {{ master_vars.etcd.s3_backup.enabled | default('false') }}
+etcd-s3-access-key: {{ master_vars.etcd.s3_backup.access_key | default('') }}
+etcd-s3-secret-key: {{ master_vars.etcd.s3_backup.secret_key | default('') }}
+etcd-s3-bucket: {{ master_vars.etcd.s3_backup.bucket | default('') }}
   
-node-name: {{ master_vars.name }}
-node-label: {{ master_vars.labels | list }}
-node-taint: {{ master_vars.taints | list }}
+node-name: {{ master_vars.name | default(inventory_hostname) }}
+node-label: {{ master_vars.labels | default([]) | list }}
+node-taint: {{ master_vars.taints | default([]) | list }}

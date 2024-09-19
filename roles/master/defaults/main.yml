@@ -10,7 +10,6 @@ master_vars:
     tls_san: []
     encrypt_secrets: true
     flannel_backend: wireguard-native
-    datastore: etcd
   etcd:
     expose_metrics: true
     snapshots:

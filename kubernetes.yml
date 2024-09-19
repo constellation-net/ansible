@@ -8,14 +8,6 @@
       vars:
         master_vars: "{{ master }}"
 
-    - include_role:
-        name: k3s
-
-    - include_role:
-        name: kubeconfig
-      vars:
-        kubeconfig_vars: "{{ kubeconfig }}"
-
 - name: Join additional server nodes to the cluster
   hosts: servers
 
@@ -27,11 +19,8 @@
           token: "{{ hostvars[groups['master'][0]]['master_token'] }}"
           join_ip: "{{ hostvars[groups['master'][0]]['master_ip'] }}"
           cluster: "{{ server.cluster }}"
-          labels: "{{ server.labels }}"
-          taints: "{{ server.taints }}"
-
-    - include_role:
-        name: k3s
+          labels: "{{ server.labels | default('[]') }}"
+          taints: "{{ server.taints | default('[]') }}"
 
 - name: Join agents to the cluster
   hosts: agents
@@ -43,14 +32,18 @@
         agent_vars:
           token: "{{ hostvars[groups['master'][0]]['master_token'] }}"
           join_ip: "{{ hostvars[groups['master'][0]]['master_ip'] }}"
-          labels: "{{ agent.labels }}"
-          taints: "{{ agent.taints }}"
-
-    - include_role:
-        name: k3s
+          labels: "{{ agent.labels | default('[]') }}"
+          taints: "{{ agent.taints | default('[]') }}"
 
 - name: Deploy Flux to the cluster
   hosts: master[0]
+  vars_prompt:
+    - name: flux_private_key_path
+      prompt: GitHub SSH private key path
+      private: false
+
+    - name: flux_private_key_passphrase
+      prompt: Private key passphrase
 
   tasks:
     - include_role:

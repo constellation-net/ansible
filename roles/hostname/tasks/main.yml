@@ -7,7 +7,6 @@
     owner: root
     group: root
     mode: "0644" # U:RW, G:R, O:R
-    state: present
 
 - name: Update hosts file
   ansible.builtin.lineinfile:
@@ -16,5 +15,5 @@
     line: "127.0.1.1 {{ inventory_hostname }}.local {{ inventory_hostname }}"
     owner: root
     group: root
-    mode: '644' # U:RW, G:R, O:R
+    mode: "0644" # U:RW, G:R, O:R
     state: present

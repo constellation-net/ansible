@@ -1,4 +1,25 @@
 ---
+- name: Check if the agent uninstall script is present
+  ansible.builtin.stat:
+    path: /usr/local/bin/k3s-agent-uninstall.sh
+  register: uninstall_file
+
+- name: Run uninstall script if it exists
+  ansible.builtin.command:
+    cmd: /usr/local/bin/k3s-agent-uninstall.sh
+    # stdin: "Y"
+  register: script_result
+  changed_when: script_result.rc == 0
+  when: uninstall_file.stat.exists
+
+- name: Creates k3s directory if needed
+  ansible.builtin.file:
+    path: /etc/rancher/k3s
+    state: directory
+    owner: root
+    group: root
+    mode: "0644" # U:RW, G:R, O:R
+
 - name: Create agent config
   ansible.builtin.template:
     src: templates/config.yml.j2
@@ -7,3 +28,15 @@
     owner: root
     group: root
     mode: "0644" # U:RW, G:R, O:R
+
+- name: Download k3s installation script
+  ansible.builtin.get_url:
+    url: https://get.k3s.io
+    dest: /tmp/k3s.sh
+    mode: "0700" # U:RWX, G:N, O:N
+
+- name: Run the k3s installation script
+  ansible.builtin.command:
+    cmd: bash /tmp/k3s.sh agent
+  register: script_result
+  changed_when: script_result.rc == 0

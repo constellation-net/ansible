@@ -1,4 +1,0 @@
-kubeconfig_vars:
-  enabled: true
-  local_path: ~/.kube/constellation
-  remote_ip:

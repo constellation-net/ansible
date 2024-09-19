@@ -1,4 +1,9 @@
 ---
+- name: Set defaults for variables
+  ansible.builtin.set_fact:
+    allow_ssh_keys: "{{ ssh_vars.auth.allow_keys | default(True) }}"
+    allow_passwords: "{{ ssh_vars.auth.allow_passwords | default(False) }}"
+
 - name: Enable SSH access via keys
   ansible.builtin.lineinfile:
     path: /etc/ssh/sshd_config
@@ -8,7 +13,7 @@
     group: root
     mode: "0644" # U:RW, G:R, O:R
     state: present
-  when: ssh_vars.auth.allow_keys
+  when: allow_ssh_keys
 
 - name: Disable SSH access via password
   ansible.builtin.lineinfile:
@@ -19,3 +24,4 @@
     group: root
     mode: "0644" # U:RW, G:R, O:R
     state: present
+  when: not allow_passwords

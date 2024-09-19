@@ -7,4 +7,3 @@ agent:
   # Prevents Pods from running on this node unless they are game servers or the resources are desperately needed
   taints:
     - taint.node.cluster.starsystem.dev=games:PreferNoSchedule
-    - taint.node.cluster.starsystem.dev=games:PreferNoExecute

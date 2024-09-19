@@ -1,4 +1,17 @@
 ---
+- name: Check if the uninstall script is present
+  ansible.builtin.stat:
+    path: /etc/argon/argon-uninstall.sh
+  register: uninstall_file
+
+- name: Run uninstall script if it exists
+  ansible.builtin.command:
+    cmd: /etc/argon/argon-uninstall.sh
+    stdin: "Y"
+  register: script_result
+  changed_when: script_result.rc == 0
+  when: uninstall_file.stat.exists
+
 - name: Download script
   ansible.builtin.get_url:
     url: https://download.argon40.com/argon1.sh

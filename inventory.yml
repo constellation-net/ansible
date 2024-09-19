@@ -20,3 +20,14 @@ raspberrypis:
     pluto:
     luna:
     sol:
+
+baremetal:
+  hosts:
+    sol:
+    luna:
+    nebula:
+    pluto:
+    voyager:
+
+truenas:
+  sagittarius:

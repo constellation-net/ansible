@@ -1,47 +1,47 @@
 ---
-- name: Determine ACL states
+- name: Set defaults for variables
   ansible.builtin.set_fact:
-    allowed_users_state: "{{ 'present' if ssh_vars.acls.allow.users | length > 0 else 'absent' }}"
-    allowed_groups_state: "{{ 'present' if ssh_vars.acls.allow.groups | length > 0 else 'absent' }}"
-    denied_users_state: "{{ 'present' if ssh_vars.acls.deny.users | length > 0 else 'absent' }}"
-    denied_groups_state: "{{ 'present' if ssh_vars.acls.deny.groups | length > 0 else 'absent' }}"
+    allowed_users: "{{ ssh_vars.acls.allow.users | default('[]') }}"
+    allowed_groups: "{{ ssh_vars.acls.allow.groups | default('[]') }}"
+    denied_users: "{{ ssh_vars.acls.deny.users | default('[]') }}"
+    denied_groups: "{{ ssh_vars.acls.deny.groups | default('[]') }}"
 
 - name: Whitelist any given users
   ansible.builtin.lineinfile:
     path: /etc/ssh/sshd_config
     search_string: "AllowUsers"
-    line: "AllowUsers {{ ssh_vars.acls.allow.users | join(', ') }}"
+    line: "AllowUsers {{ allowed_users | join(', ') }}"
     owner: root
     group: root
     mode: "0644" # U:RW, G:R, O:R
-    state: "{{ allowed_users_state }}"
+    state: "{{ 'present' if allowed_users | length > 0 else 'absent' }}"
 
 - name: Whitelist any given groups
   ansible.builtin.lineinfile:
     path: /etc/ssh/sshd_config
     search_string: "AllowGroups"
-    line: "AllowGroups {{ ssh_vars.acls.allow.groups | join(', ') }}"
+    line: "AllowGroups {{ allowed_groups | join(', ') }}"
     owner: root
     group: root
     mode: "0644" # U:RW, G:R, O:R
-    state: "{{ allowed_groups_state }}"
+    state: "{{ 'present' if allowed_groups | length > 0 else 'absent' }}"
 
 - name: Blacklist any given users
   ansible.builtin.lineinfile:
     path: /etc/ssh/sshd_config
     search_string: "DenyUsers"
-    line: "DenyUsers {{ ssh_vars.acls.deny.users | join(', ') }}"
+    line: "DenyUsers {{ denied_users | join(', ') }}"
     owner: root
     group: root
     mode: "0644" # U:RW, G:R, O:R
-    state: "{{ denied_users_state }}"
+    state: "{{ 'present' if denied_users | length > 0 else 'absent' }}"
 
 - name: Blacklist any given groups
   ansible.builtin.lineinfile:
     path: /etc/ssh/sshd_config
     search_string: "DenyGroups"
-    line: "DenyGroups {{ ssh_vars.acls.deny.groups | join(', ') }}"
+    line: "DenyGroups {{ denied_groups | join(', ') }}"
     owner: root
     group: root
     mode: "0644" # U:RW, G:R, O:R
-    state: "{{ denied_groups_state }}"
+    state: "{{ 'present' if denied_groups | length > 0 else 'absent' }}"

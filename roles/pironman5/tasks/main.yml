@@ -1,15 +1,18 @@
 ---
+# TODO: find a way to uninstall the software if it is already present
+
+- name: Install Git and pip
+  ansible.builtin.apt:
+    name:
+      - git
+      - python3-pip
+    state: latest
+
 - name: Clone Git repository
   ansible.builtin.git:
     repo: https://github.com/sunfounder/pironman.git
     dest: /etc/pironman
     version: v2.0
-
-- name: Run Python install script
-  ansible.builtin.script:
-    chdir: /etc/pironman
-    cmd: install.py
-    executable: python3
 
 # See here for all possible config options: https://docs.sunfounder.com/projects/pironman-v2/en/latest/setup_pironman.html#modify-the-configuration
 - name: Set LCD screen to be always on
@@ -18,3 +21,11 @@
     search_string: screen_always_on
     path: /opt/pironman/config.txt
     state: present
+
+- name: Run Python install script
+  ansible.builtin.command:
+    cmd: python3 install.py
+    chdir: /etc/pironman
+    stdin: "N"
+  register: script_result
+  changed_when: script_result.rc == 0

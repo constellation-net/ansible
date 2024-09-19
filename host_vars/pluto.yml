@@ -4,4 +4,3 @@ ansible_host: 192.168.1.123
 agent:
   taints:
     - taint.node.cluster.starsystem.dev=slownet:PreferNoSchedule
-    - taint.node.cluster.starsystem.dev=slownet:PreferNoExecute

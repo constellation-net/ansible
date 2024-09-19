@@ -1,4 +1,14 @@
 ---
+- name: Set a few special options for TrueNAS nodes
+  hosts: truenas
+
+  tasks:
+    - name: Disable the read only file system
+      ansible.builtin.command:
+        cmd: /usr/local/libexec/disable-rootfs-protection
+      register: script_result
+      changed_when: script_result.rc == 0
+
 - name: Configure common node options
   hosts: all
 
@@ -16,7 +26,7 @@
         fstype: "{{ item.fs }}"
         boot: true
         state: mounted
-      loop: drives
+      loop: "{{ drives }}"
 
     - include_role:
         name: ssh
@@ -34,14 +44,14 @@
 
     - include_role:
         name: pironman5
-      when: model is regex('^Raspberry Pi 5*')
+      when: model is regex('^Raspberry Pi 5')
 
     - include_role:
         name: argon40
-      when: model is regex('^Raspberry Pi 4*')
+      when: model is regex('^Raspberry Pi 4')
 
-- name: Reboot all nodes so changes can take effect
-  hosts: all
+- name: Reboot all physical nodes so changes can take effect
+  hosts: baremetal # By rebooting the host, VMs will also be rebooted, so we don't need to send them a reboot command. If we don't skip VMs, we end up with errors
 
   tasks:
     - ansible.builtin.reboot:

@@ -1,5 +1,5 @@
 neofetch
-figlet -t "{{ motd_vars.figlet_text }}"
+figlet -t "{{ motd_vars.figlet_text | default('Constellation') }}"
 echo "\n"
 echo "Node: {{ inventory_hostname }}"
 echo "Local IP address: $(ip -o route get to 8.8.8.8 | sed -n 's/.*src \([0-9.]\+\).*/\1/p')"

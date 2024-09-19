@@ -4,11 +4,18 @@
     line: ". <(flux completion bash)"
     path: /etc/profile
     state: present
-  when: flux_vars.add_bash_autocompletions
+
+- name: Copy bootstrap SSH private key to host
+  ansible.builtin.copy:
+    dest: /tmp/flux_ssh.key
+    src: "{{ flux_vars.bootstrap.private_key }}"
+    force: true
+    mode: "0700" # U:RWX, G:N, O:N
 
 # As per https://fluxcd.io/flux/installation, flux bootstrap is indempotent. Hence, it's safe to run this just using Ansible's command module
 - name: Bootstrap the Flux Git repository
   ansible.builtin.command:
-    cmd: flux bootstrap github --owner={{ flux_vars.bootstrap.owner }} --repository={{ flux_vars.bootstrap.repository }} --branch={{ flux_vars.bootstrap.branch }} --path={{ flux_vars.bootstrap.path }} --cluster-domain={{ flux_vars.cluster_domain }} --private=false --personal=false
+    cmd: flux bootstrap git --url=ssh://git@github.com/{{ flux_vars.bootstrap.owner }}/{{ flux_vars.bootstrap.repository }} --branch={{ flux_vars.bootstrap.branch | default('main') }} --path={{ flux_vars.bootstrap.path | default('./') }} --cluster-domain={{ flux_vars.cluster_domain | default('cluster.local') }} --private-key-file=/tmp/flux_ssh.key --password={{ flux_vars.bootstrap.private_key_passphrase }} --kubeconfig=/etc/rancher/k3s/k3s.yaml
+    stdin: "Y"
   register: script_result
   changed_when: script_result.rc == 0

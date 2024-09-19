@@ -6,4 +6,3 @@ agent:
     - class.node.cluster.starsystem.dev=nas
   taints:
     - taint.node.cluster.starsystem.dev=nas:PreferNoSchedule
-    - taint.node.cluster.starsystem.dev=nas:PreferNoExecute

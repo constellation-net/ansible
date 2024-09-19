@@ -1,7 +1,16 @@
 ---
-# Needed for Kubernetes to run on the RPi
-- name: Add cgroup config to boot options
-  ansible.builtin.command:
-    cmd: echo " cgroup_memory=1 cgroup_enable=memory" >> /boot/firmware/cmdline.txt
-  register: script_result
-  changed_when: script_result.rc == 0
+- name: Fetch the boot options file
+  ansible.builtin.slurp:
+    src: /boot/firmware/cmdline.txt
+  register: boot_file
+
+- set_fact:
+    boot_file_contents: "{{ boot_file['content'] | b64decode }}"
+
+- name: Add cgroup config to boot options if not already present
+  ansible.builtin.lineinfile:
+    search_string: "{{ boot_file_contents }}"
+    line: "{{ boot_file_contents }} cgroup_memory=1 cgroup_enable=memory"
+    path: /boot/firmware/cmdline.txt
+    state: present
+  when: boot_file_contents is not regex('cgroup_memory=1 cgroup_enable=memory') # Needed to prevent the cgroup settings being added multiple times

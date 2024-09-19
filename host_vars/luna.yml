@@ -16,4 +16,3 @@ server:
   # Should the compute resources be needed (e.g. other nodes go offline), then K8s is allowed to use this node
   taints:
     - taint.node.cluster.starsystem.dev=database:PreferNoSchedule
-    - taint.node.cluster.starsystem.dev=database:PreferNoExecute

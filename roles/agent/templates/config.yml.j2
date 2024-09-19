@@ -1,5 +1,5 @@
-node-name: {{ agent_vars.name }}
-node-label: {{ agent_vars.labels | list }}
-node-taint: {{ agent_vars.taints | list }}
-server: {{ agent_vars.join_ip }}
+node-name: {{ agent_vars.name | default('inventory_hostname') }}
+node-label: {{ agent_vars.labels | default([]) | list }}
+node-taint: {{ agent_vars.taints | default([]) | list }}
+server: https://{{ agent_vars.join_ip }}:6443
 token: {{ agent_vars.token }}

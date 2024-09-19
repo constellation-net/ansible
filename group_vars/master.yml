@@ -1,9 +1,11 @@
 ---
 flux:
   cluster_domain: cluster.starsystem.dev
-  git:
+  bootstrap:
     owner: constellation-net
     repository: cluster
+    private_key: "{{ flux_private_key_path }}"
+    private_key_passphrase: "{{ flux_private_key_passphrase }}"
 
 master:
   cluster:
@@ -15,7 +17,3 @@ master:
     disable_cloud_controller: true # So kube-vip can manage LoadBalancer services
     tls_san:
       - 192.168.1.119 # Virtual IP of the cluster
-
-kubeconfig:
-  local_copy:
-    remote_ip: 192.168.1.119

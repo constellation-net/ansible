@@ -4,5 +4,4 @@ flux_vars:
     repository:
     branch: main
     path: ./
-  add_bash_autocompletions: true
   cluster_domain: cluster.local

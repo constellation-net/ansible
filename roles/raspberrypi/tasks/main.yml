@@ -1,6 +1,10 @@
 ---
+- name: Set defaults for variables
+  ansible.builtin.set_fact:
+    overclock: "{{ raspberrypi_vars.overclocking.enabled | default(False) }}"
+
 - import_tasks: k3s.yml
 - import_tasks: model.yml
 
 - include_tasks: overclock.yml
-  when: raspberrypi_vars.overclocking.enabled
+  when: overclock

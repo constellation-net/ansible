@@ -1,12 +1,12 @@
-cluster-domain: {{ server_vars.cluster.domain }}
-write-kubeconfig-mode: {{ server_vars.cluster.kubeconfig_write_mode }}
-disable: {{ server_vars.cluster.disable | list }}
-disable-cloud-controller: {{ server_vars.cluster.disable_cloud_controller }}
-secrets-encryption: {{ server_vars.cluster.encrypt_secrets }}
-flannel-backend: {{ server_vars.cluster.flannel_backend }}
+cluster-domain: {{ server_vars.cluster.domain | default('cluster.local') }}
+write-kubeconfig-mode: {{ server_vars.cluster.kubeconfig_write_mode | default('0644') }}
+disable: {{ server_vars.cluster.disable | default([]) | list }}
+disable-cloud-controller: {{ server_vars.cluster.disable_cloud_controller | default(false) }}
+secrets-encryption: {{ server_vars.cluster.encrypt_secrets | default(true) }}
+flannel-backend: {{ server_vars.cluster.flannel_backend | default('wireguard-native') }}
   
-node-name: {{ server_vars.name }}
-node-label: {{ server_vars.labels | list }}
-node-taint: {{ server_vars.taints | list }}
-server: {{ server_vars.join_ip }}
+node-name: {{ server_vars.name | default(inventory_hostname) }}
+node-label: {{ server_vars.labels | default([]) | list }}
+node-taint: {{ server_vars.taints | default([]) | list }}
+server: https://{{ server_vars.join_ip }}:6443
 token: {{ server_vars.token }}

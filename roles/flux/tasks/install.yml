@@ -1,12 +1,14 @@
 ---
+# There's no need to uninstall Flux here, as uninstalling K3s will do that for us
+
 - name: Download FluxCD installation script
   ansible.builtin.get_url:
     url: https://fluxcd.io/install.sh
-    dest: /tmp/fluxcd/install.sh
+    dest: /tmp/fluxcd.sh
     mode: "0700" # U:RWX, G:N, O:N
 
 - name: Run installation script
   ansible.builtin.command:
-    cmd: bash /tmp/fluxcd/install.sh
+    cmd: bash /tmp/fluxcd.sh
   register: script_result
   changed_when: script_result.rc == 0
