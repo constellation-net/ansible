@@ -3,4 +3,4 @@ ansible_host: 192.168.1.123
 
 server:
   taints:
-    - taint.node.cluster.starsystem.dev=wireless-net:PreferNoSchedule # Repels pods that rely on a fast internet connection, pods that mostly do local tasks will tolerate this
+    - starsystem.dev/wireless-net=true:PreferNoSchedule # Repels pods that rely on a fast internet connection, pods that mostly do local tasks will tolerate this

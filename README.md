@@ -29,7 +29,7 @@ Typically, the reason for this is that it's difficult to make indempotent, or ma
 ## Node Labels & Taints
 
 ### Labels
-The cluster uses labels to attract certain pods to nodes which have a resource they need. They all use the key `affinity.node.cluster.starsystem.dev`, and there are several labels respected so far:
+The cluster uses labels to attract certain pods to nodes which have a resource they need. They all use the key `starsystem.dev/<label>`, and there are several labels respected so far:
 - `camera`: this node has a camera attached to it, which attracted pods can stream over the network
 - `database`: indicates the node has a drive/partition available using the `database` storage class for storing db data, so the node can run database servers
 - `games`: the node's resources can be used for running game servers as well as related pods (e.g. routers, plugins, monitors, etc)
@@ -39,7 +39,7 @@ The cluster uses labels to attract certain pods to nodes which have a resource t
 - `rtc`: means this node has a dedicated Real Time Clock (RTC) and can be used for running a local NTP server
 
 ### Taints
-Taints are the opposite to labels in this cluster; they repel pods. Usually, a taint tells Kubernetes that a node lacks a certain resource (e.g. networking, storage, etc). However, no taint exists for lacking compute resources (i.e. CPU and RAM), as the K8s scheduler is already aware of these resources and what is required by each pod. The key for all taints is `taint.node.cluster.starsystem.dev`:
+Taints are the opposite to labels in this cluster; they repel pods. Usually, a taint tells Kubernetes that a node lacks a certain resource (e.g. networking, storage, etc). However, no taint exists for lacking compute resources (i.e. CPU and RAM), as the K8s scheduler is already aware of these resources and what is required by each pod. The key for all taints is `starsystem.dev/<taint>`:
 - `device` - NoSchedule, NoExecute: this node is an IoT device with limited resources, which need to be reserved for their special software (e.g. camera streams)
 - `games` - PreferNoSchedule: non-game related pods will kept away from this node unless there are no other nodes available, helps keep resources reserved for the game servers if needed
 - `hypervisor` - NoSchedule, NoExecute: prevents certain monitoring pods from running on here, which could report the machine's resources twice (due to the VMs it runs also being reported)

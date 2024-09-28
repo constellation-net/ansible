@@ -3,10 +3,10 @@ ansible_host: 192.168.1.124
 
 agent:
   labels:
-    - affinity.node.cluster.starsystem.dev=camera # Camera streaming pods can run on this node
+    - starsystem.dev/camera=true # Camera streaming pods can run on this node
   taints:
     # Anything other than camera streaming pods will be repelled from this node
-    - taint.node.cluster.starsystem.dev=device:NoSchedule
-    - taint.node.cluster.starsystem.dev=device:NoExecute
+    - starsystem.dev/device=true:NoSchedule
+    - starsystem.dev/device=true:NoExecute
     # This is kind of obsolete from the above taints but as Voyager has a wireless LAN connection it's here just in case
-    - taint.node.cluster.starsystem.dev=wireless-net:PreferNoSchedule
+    - starsystem.dev/wireless-net=true:PreferNoSchedule

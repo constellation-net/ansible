@@ -3,8 +3,8 @@ ansible_host: 192.168.1.122
 
 agent:
   taints:
-    - taint.node.cluster.starsystem.dev=hypervisor:NoSchedule
-    - taint.node.cluster.starsystem.dev=hypervisor:NoExecute
+    - starsystem.dev/hypervisor=true:NoSchedule
+    - starsystem.dev/hypervisor=true:NoExecute
 
 ssh:
   allow_root_login: true
