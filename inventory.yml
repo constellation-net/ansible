@@ -5,14 +5,14 @@ master:
 servers:
   hosts:
     luna:
-    nebula:
+    pluto:
 
 agents:
   hosts:
-    pluto:
+    sagittarius:
     voyager:
     clover:
-    sagittarius: 
+    nebula: 
 
 raspberrypis:
   hosts:

@@ -3,7 +3,6 @@ ansible_host: 192.168.1.125
 
 agent:
   labels:
-    - class.node.cluster.starsystem.dev=games # Indicates that the compute resources on this node are reserved for hosting game servers
-  # Prevents Pods from running on this node unless they are game servers or the resources are desperately needed
+    - affinity.node.cluster.starsystem.dev=games # Games will only run on nodes with this label
   taints:
-    - taint.node.cluster.starsystem.dev=games:PreferNoSchedule
+    - taint.node.cluster.starsystem.dev=games:PreferNoSchedule # Reserves a game node's resources unless the cluster doesn't have enough for other pods

@@ -4,6 +4,7 @@ flux:
   bootstrap:
     owner: constellation-net
     repository: cluster
+    path: kustomizations
     private_key: "{{ flux_private_key_path }}"
     private_key_passphrase: "{{ flux_private_key_passphrase }}"
 

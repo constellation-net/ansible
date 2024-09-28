@@ -1,6 +1,11 @@
 ---
 ansible_host: 192.168.1.120
 
+server:
+  labels:
+    - affinity.node.cluster.starsystem.dev=prometheus # Allows a Prometheus replica to run on this node and use its storage
+    - affinity.node.cluster.starsystem.dev=rtc # Has a dedicated RTC for running an NTP server
+
 raspberrypi:
   overclocking:
     enabled: true
