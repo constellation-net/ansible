@@ -1,7 +1,7 @@
 ---
 ansible_host: 192.168.1.120
 
-server:
+master:
   labels:
     - starsystem.dev/prometheus=true # Allows a Prometheus replica to run on this node and use its storage
     - starsystem.dev/rtc=true # Has a dedicated RTC for running an NTP server
